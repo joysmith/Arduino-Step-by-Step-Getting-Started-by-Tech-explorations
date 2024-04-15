@@ -16,7 +16,7 @@
 
 #### Sensor category
 
-- Environment sensor
+- Environment sensor( 💡can group sensor according to use case in Table format for easy search )
 - Motion sensor
 - Distance sensor
 - Sound sensor
