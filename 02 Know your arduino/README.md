@@ -14,9 +14,17 @@
 
 ### 7. The Arduino Uno over the years<a id="7"></a>
 
+- genuine vs compatible arduino board
+
 ### 8. Getting to know the Arduino Uno: Atmega328P, USB, Shields<a id="8"></a>
 
+- no operating system
+- ram, processor, storage
+- Atmega328p is microcontroller for general purpose, Atmeaga16u2 use for usb-socket serial communication b/w computer and Atmega328p
+
 ### 9. Getting to know the Arduino Uno: Pins, power, clock<a id="9"></a>
+
+- Ardunio uno r3 documentation [click me](https://docs.arduino.cc/hardware/uno-rev3/)
 
 ### 10. Using the digital output pins<a id="10"></a>
 
