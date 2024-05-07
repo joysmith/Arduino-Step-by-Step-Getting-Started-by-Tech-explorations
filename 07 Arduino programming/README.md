@@ -298,6 +298,10 @@ void loop() {
 - Ardunio uno r3 documentation digitalWrite() function [click me](https://www.arduino.cc/reference/en/language/functions/digital-io/digitalwrite/)
 - Ardunio uno r3 documentation delay() function [click me](https://www.arduino.cc/reference/en/language/functions/time/delay/)
 
+Note-
+
+- LED uses current limiting resistor to protect it from damaging it
+
 ### 72. Digital input - how to read the state of a button<a id="72"></a>
 
 <img src="assets/images/23.png" width="700">
@@ -387,6 +391,7 @@ Note-
 - The analogRead() function reads value from 0-1023
 - The analogWrite() function write value from 0-255
 - Thats why we need map() function to map value (scale in)
+- LED uses current limiting resistor to protect it from damaging it
 
 ### 75. Introduction to the RGB (color) LED<a id="75"></a>
 
@@ -473,6 +478,11 @@ void loop() {
 
 - Ardunio uno r3 documentation #define [click me](https://www.arduino.cc/reference/en/language/structure/further-syntax/define/)
 
+Note-
+
+- We define RED_PIN keyword that correspond to numerical 3 (which is a pin on arduino)
+- LED uses current limiting resistor to protect it from damaging it
+
 ### 77. RGB LED: creating colors<a id="77"></a>
 
 White color. if we calibrate current limiting resistor
@@ -499,6 +509,10 @@ void loop() {
 }
 
 ```
+
+Note-
+
+- LED uses current limiting resistor to protect it from damaging it
 
 ### 78. Using a library to control an RGB LED with PWM<a id="78"></a>
 
@@ -598,3 +612,9 @@ void loop()
 - github Arduino Light Animation (ALA) library [click me](https://github.com/bportaluri/ALA)
 
 ### 79. Learning more with the Arduino language documentation<a id="79"></a>
+
+#### How to open Ardunio language reference documentation
+
+- Open arduino, go to Help--> reference
+
+- Ardunio language reference documentation [click me](https://www.arduino.cc/reference/en/)
