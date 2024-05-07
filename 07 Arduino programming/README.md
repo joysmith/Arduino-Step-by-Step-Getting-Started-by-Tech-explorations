@@ -502,4 +502,99 @@ void loop() {
 
 ### 78. Using a library to control an RGB LED with PWM<a id="78"></a>
 
+#### How to install library in local system
+
+- Open arduino go to sketch--> include library--> manage libraries--> search: "ALA" by bportaluri--> install
+
+<br>
+
+#### Where do arduino store all my libraries
+
+- Open arduino go to file--> preference--> sketchbook location (dig some level and find libraries-folder)
+
+<br>
+
+##### How to open boiler plate sketch
+
+<img src="assets/images/ledanimation.gif" width="700">
+
+- Open arduino go to file --> example--> ALA--> simpleRGBLED
+
+```ino
+// Object oriented programming paradigm
+
+#include <AlaLedRgb.h>
+
+#define REDPIN 3
+#define GREENPIN 5
+#define BLUEPIN 6
+
+
+// create a new object from AlaLedRgb class
+AlaLedRgb rgbLed;
+
+void setup()
+{
+  rgbLed.initPWM(REDPIN, GREENPIN, BLUEPIN);                 // initialize output pins
+  rgbLed.setBrightness(0x66FF44);                            // calibrate white
+  rgbLed.setAnimation(ALA_FADECOLORSLOOP, 5000, alaPalRgb);  // set the animation
+}
+
+void loop()
+{
+  rgbLed.runAnimation();  // run the animation indefinitely
+}
+
+
+```
+
+---
+
+#### How to get more animation effect
+
+- github Arduino Light Animation (ALA) library animation configuration [click me](https://yaab-arduino.blogspot.com/p/ala-animations.html)
+
+```ino
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+// ALA library example: SimpleRgbLed
+//
+// Example to demonstrate how to create a color-fading animation for one RGB LED.
+//
+// Web page: http://yaab-arduino.blogspot.com/p/ala-example-simplergbled.html
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+
+#include <AlaLedRgb.h>
+
+#define REDPIN 3
+#define GREENPIN 5
+#define BLUEPIN 6
+
+
+// create a new object from AlaLedRgb class
+AlaLedRgb rgbLed;
+
+void setup()
+{
+  rgbLed.initPWM(REDPIN, GREENPIN, BLUEPIN);                 // initialize output pins
+  rgbLed.setBrightness(0x66FF44);                            // calibrate white
+
+  // 1️⃣ refer from documentation, Put GLOW in front of ALA_ to change LED animation effect
+  rgbLed.setAnimation(ALA_GLOW, 5000, alaPalRgb);  // set the animation
+}
+
+void loop()
+{
+  rgbLed.runAnimation();  // run the animation indefinitely
+}
+
+```
+
+<br>
+
+- Ardunio uno r3 documentation analogWrite() function [click me](https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/)
+- Wiki class concept [click me](<https://en.wikipedia.org/wiki/Class_(computer_programming)>)
+- github Arduino Light Animation (ALA) library [click me](https://github.com/bportaluri/ALA)
+
 ### 79. Learning more with the Arduino language documentation<a id="79"></a>
