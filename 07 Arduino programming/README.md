@@ -258,15 +258,135 @@ int do_a_calc(int number_1, int number_2){
 
 ### 71. Digital output - how to control an LED<a id="71"></a>
 
+Component used
+<img src="assets/images/19.png" width="700">
+
+<br>
+
+LED pins
+<img src="assets/images/20.png" width="700">
+
+<br>
+
+Schematic configuration
+<img src="assets/images/21.png" width="700">
+
+<br>
+
+Sketch
+<img src="assets/images/22.png" width="700">
+
+```ino
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
+  delay(1000);                      // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
+  delay(1000);                      // wait for a second
+}
+```
+
+- File--> example--> basic--> Blink
 - Ardunio uno r3 documentation pinMode() function [click me](https://www.arduino.cc/reference/en/language/functions/digital-io/pinmode/)
 - Ardunio uno r3 documentation digitalWrite() function [click me](https://www.arduino.cc/reference/en/language/functions/digital-io/digitalwrite/)
 - Ardunio uno r3 documentation delay() function [click me](https://www.arduino.cc/reference/en/language/functions/time/delay/)
 
 ### 72. Digital input - how to read the state of a button<a id="72"></a>
 
+<img src="assets/images/23.png" width="700">
+
+<img src="assets/images/24.png" width="700">
+
+<img src="assets/images/25.png" width="700">
+
+- Pull-up and pull-down register concept [click me](https://techexplorations.com/guides/arduino/common-circuits/pull-up-and-pull-down-resistors/)
+- Wiki relational operator [click me](https://en.wikipedia.org/wiki/Relational_operator)
+
+Note
+
+- pull-down resistor: no current comes from pin, but arduino pin sense/read coming voltage from Vcc
+
 ### 73. Analog input - how to read the state of a potentiometer<a id="73"></a>
 
+PWM definition
+<img src="assets/images/26.png" width="700">
+
+<br>
+
+components
+<img src="assets/images/27.png" width="700">
+
+<br>
+
+working of potentiometer
+<img src="assets/images/28.png" width="700">
+
+<br>
+
+configuration
+<img src="assets/images/29.png" width="700">
+
+<br>
+
+sketch
+<img src="assets/images/30.png" width="700">
+
+<br>
+
+In action
+<img src="assets/images/31.png" width="700">
+
+- Ardunio uno r3 documentation analogRead() function [click me](https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/)
+
+- Wiki potentiometer [click me](https://en.wikipedia.org/wiki/Potentiometer)
+
+<br>
+
+Note
+
+- Analog read value from 0-1023
+
 ### 74. Analog output - how to create a fading LED<a id="74"></a>
+
+PWM
+<img src="assets/images/32.png" width="700">
+
+- Red will make LED, glow brighter, as it turn on for long duration
+- Blue will make LED, glow dim, as it turn off for long duration
+
+---
+
+<br>
+
+component
+<img src="assets/images/33.png" width="700">
+
+<br>
+
+Configuration
+<img src="assets/images/34.png" width="700">
+
+<br>
+
+Sketch
+<img src="assets/images/35.png" width="700">
+
+- Ardunio uno r3 documentation Basics of PWM (Pulse Width Modulation) [click me](https://docs.arduino.cc/learn/microcontrollers/analog-output/)
+- Ardunio uno r3 documentation analogWrite() function [click me](https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/)
+- Ardunio uno r3 documentation map() function [click me](https://www.arduino.cc/reference/en/language/functions/math/map/)
+
+Note-
+
+- The analogRead() function reads value from 0-1023
+- The analogWrite() function write value from 0-255
+- Thats why we need map() function to map value (scale in)
 
 ### 75. Introduction to the RGB (color) LED<a id="75"></a>
 
