@@ -41,6 +41,7 @@
 <br>
 
 Schematic diagram
+
 <img src="assets/images/photoresistor schematic.png" width="700">
 
 <br>
@@ -239,6 +240,7 @@ void loop() {
 ### 91. Wiring the RGB Color sensor<a id="91"></a>
 
 Schematic diagram
+
 <img src="assets/images/13.png" width="700">
 
 <img src="assets/images/14.png" width="700">
