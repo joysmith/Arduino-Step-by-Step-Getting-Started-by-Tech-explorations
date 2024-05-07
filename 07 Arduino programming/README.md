@@ -390,9 +390,115 @@ Note-
 
 ### 75. Introduction to the RGB (color) LED<a id="75"></a>
 
+library definition
+<img src="assets/images/36.png" width="700">
+
+<br>
+
+Testing LED with coin battery
+<img src="assets/images/37.png" width="700">
+
+<br>
+
+Common cathode: long pin is -ive in this LED
+<img src="assets/images/38.png" width="700">
+
+<br>
+
+Amazing engineering
+<img src="assets/images/39.png" width="700">
+
+- Wiki LED [click me](https://en.wikipedia.org/wiki/Light-emitting_diode#RGB)
+
 ### 76. Wiring the RGB LED<a id="76"></a>
 
+Testing LED color by drawing current from arduino vcc
+<img src="assets/images/40.png" width="700">
+
+<br>
+
+attaching red wire after finding color of LED; Testing LED color by drawing current from arduino vcc
+
+<img src="assets/images/41.png" width="700">
+
+<br>
+
+attaching green wire after finding color of LED
+
+<img src="assets/images/42.png" width="700">
+
+<br>
+
+Testing LED color by drawing current from arduino vcc
+
+<img src="assets/images/43.png" width="700">
+
+<br>
+
+attaching blue wire after finding color of LED
+
+<img src="assets/images/44.png" width="700">
+
+```ino
+
+//const int red_pin = 3;
+
+#define RED_PIN   3
+#define BLUE_PIN  6
+#define GREEN_PIN 5
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(RED_PIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+
+  digitalWrite(RED_PIN, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(BLUE_PIN, HIGH);
+  delay(1000);                       // wait for a second
+
+  digitalWrite(BLUE_PIN, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(GREEN_PIN, HIGH);
+  delay(1000);
+}
+```
+
+- Ardunio uno r3 documentation #define [click me](https://www.arduino.cc/reference/en/language/structure/further-syntax/define/)
+
 ### 77. RGB LED: creating colors<a id="77"></a>
+
+White color. if we calibrate current limiting resistor
+<img src="assets/images/45.png" width="700">
+
+```ino
+#define RED_PIN   3
+#define BLUE_PIN  6
+#define GREEN_PIN 5
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  analogWrite(GREEN_PIN, 50);
+  analogWrite(RED_PIN, 100);
+  analogWrite(BLUE_PIN, 100);
+}
+
+```
 
 ### 78. Using a library to control an RGB LED with PWM<a id="78"></a>
 
