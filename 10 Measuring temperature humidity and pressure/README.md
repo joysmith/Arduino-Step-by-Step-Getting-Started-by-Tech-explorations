@@ -35,12 +35,6 @@
 
 <img src="assets/images/3.png" width="700">
 
-- DHT22 also named as AM2302, humidity & temperature sensor datasheet [click me](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
-- Wiki humidity concept [click me](https://en.wikipedia.org/wiki/Humidity#Relative_humidity)
-- Wiki heat index concept [click me](https://en.wikipedia.org/wiki/Heat_index)
-- Techexploration pull-up & pull-down concept [click me](https://techexplorations.com/guides/arduino/common-circuits/pull-up-and-pull-down-resistors/)
-- github DHT22 library [click me](https://github.com/adafruit/DHT-sensor-library)
-
 ```ino
 /*  DHT22/11 temerature and humidity sensor demonstration sketch
  *
@@ -165,21 +159,581 @@ void loop() {
 }
 ```
 
+- DHT22 also named as AM2302, humidity & temperature sensor datasheet [click me](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
+- Wiki humidity concept [click me](https://en.wikipedia.org/wiki/Humidity#Relative_humidity)
+- Wiki heat index concept [click me](https://en.wikipedia.org/wiki/Heat_index)
+- Techexploration pull-up & pull-down concept [click me](https://techexplorations.com/guides/arduino/common-circuits/pull-up-and-pull-down-resistors/)
+- github DHT22 library [click me](https://github.com/adafruit/DHT-sensor-library)
+
 ### 95. An introduction to the Thermistor<a id="95"></a>
+
+#### How to check if thermistor is NTC or PTC
+
+<img src="assets/images/4.png" width="700">
+
+- Set multimeter to check resistance connect with two terminal of thermistor
+- now put finger around thermistor and check resistance
+- case1: if resistance drop from room temp then NTC
+- case2: if resistance increase from room temp then PTC
+- The thermistor is an analog sensor, its resistance changes as temperature changes
+
+- Wiki Thermistor concept [click me](https://en.wikipedia.org/wiki/Thermistor)
+
+Note-
+
+- Most of the sensor work on measuring resistance they all are transducer that change physical value to electrical value
+- Means if i could create a device that change resistance depending of external changes like temperature, humidity, CO2, etc then i can apply ADC converter a formula to get correct reading
 
 ### 96. Wiring the Thermistor<a id="96"></a>
 
+#### 5v schematic
+
+<img src="assets/images/5.png" width="700">
+
+<img src="assets/images/Thermistor+5V.png" width="700">
+
+#### 3.3v schematic
+
+<img src="assets/images/Thermistor+3V3.png" width="700">
+
+#### Output
+
+<img src="assets/images/6.png" width="700">
+
+<img src="assets/images/7.png" width="700">
+
+```ino
+/*  Thermistor temperature sensor demonstration sketch
+ *
+ * This sketch calculates the the resistane of a
+ * thermistor connected in a voltage divider circuit.
+ *
+ * This sketch was written for Arduino Step by Step by Peter Dalmaris.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - thermistor temperature sensor
+ *  - 10 kOhm resistor
+ *
+ *  Libraries
+ *  ---------
+ *  Thermistor.h
+ *
+ * Connections
+ * -----------
+ *
+ * Connect the Arduino 5V pin to one end of the
+ * thermistor. Connect the resistor to the Arduino GND
+ * pin. Connect the free pins on the thermistor and
+ * resistor together. Connect the thermistor and resistor
+ * junction to the Arduino analog pin 0. This
+ * structure is called a "voltage divider".
+ *                    10 kΩ
+ *  5V -----OOO------\/\/\/-----GND
+ *                |
+ *                |
+ *                |
+ *                A0
+ *
+ *
+ * Other information
+ * -----------------
+ *
+ * About the termistor: https://en.wikipedia.org/wiki/Thermistor
+ * The Github repository for the library: https://github.com/panStamp/thermistor
+ *
+ *
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ */
+
+// the value of the 'other' resistor. I am using a 10 KOhm resistor.
+#define SERIESRESISTOR 9950
+
+// What pin to connect the sensor to
+#define THERMISTORPIN A0
+
+void setup(void) {
+  Serial.begin(9600);
+}
+
+void loop(void) {
+  float reading;
+
+  reading = analogRead(THERMISTORPIN);
+
+  Serial.print("Analog reading ");
+  Serial.println(reading);
+
+  // convert the value to resistance
+  reading = (1023 / reading)  - 1;
+  reading = SERIESRESISTOR / reading;
+  Serial.print("Thermistor resistance ");
+  Serial.println(reading);
+
+  delay(1000);
+}
+```
+
+- Linear equation math calculator [click me](https://doodlelearning.com/us/math-app)
+
 ### 97. How to calculate the temperature from the thermistor resistance<a id="97"></a>
+
+<img src="assets/images/8.png" width="700">
+
+<img src="assets/images/9.png" width="700">
 
 ### 98. Thermistor: getting a temperature using a library<a id="98"></a>
 
+#### Output
+
+<img src="assets/images/10.png" width="700">
+
+```ino
+/*  Thermistor temperature sensor demonstration sketch
+ *
+ * This sketch calculates the the temperature by reading the voltage of a
+ * thermistor connected in a voltage divider circuit.
+ *
+ * It then does a caclulation to convert this raw reading into a temperature.
+ *
+ * This sketch was adapted for Arduino Step by Step by Peter Dalmaris from the
+ * demo sketch that ships with the library, written by Daniel Berenguer.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - thermistor temperature sensor
+ *  - 10 kOhm resistor
+ *
+ *  Libraries
+ *  ---------
+ *  Thermistor.h
+ *
+ * Connections
+ * -----------
+ *
+ * Connect the Arduino 5V pin to one end of the
+ * thermistor. Connect the resistor to the Arduino GND
+ * pin. Connect the free pins on the thermistor and
+ * resistor together. Connect the thermistor and resistor
+ * junction to the Arduino analog pin 0. This
+ * structure is called a "voltage divider".
+ *                    10 kΩ
+ *  5V -----OOO------\/\/\/-----GND
+ *                |
+ *                |
+ *                |
+ *                A0
+ *
+ *
+ * Other information
+ * -----------------
+ *
+ * About the termistor: https://en.wikipedia.org/wiki/Thermistor
+ * The Github repository for the library: https://github.com/panStamp/thermistor
+ *
+ *
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ */
+
+/**
+ * Copyright (c) 2015 panStamp S.L.U. <contact@panstamp.com>
+ *
+ * This file is part of the panStamp project.
+ *
+ * panStamp  is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * panStamp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with panStamp; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+ * USA
+ *
+ * Author: Daniel Berenguer
+ * Creation date: 06/24/2015
+ */
+
+#include "thermistor.h"
+
+// Analog pin used to read the NTC
+#define NTC_PIN               A0
+
+// Thermistor object
+THERMISTOR thermistor(NTC_PIN,        // Analog pin
+                      7500,          // Nominal resistance at 25 ºC
+                      3950,           // thermistor's beta coefficient
+                      9950);         // Value of the series resistor
+
+// Global temperature reading
+uint16_t temp;
+
+/**
+ * setup
+ *
+ * Arduino setup function
+ */
+void setup()
+{
+  Serial.begin(9600);
+}
+
+/**
+ * loop
+ *
+ * Arduino main loop
+ */
+void loop()
+{
+  temp = thermistor.read();   // Read temperature
+
+  Serial.print("Temp in 1/10 ºC : ");
+  Serial.println(temp);
+
+  delay(5000);
+}
+
+```
+
+- github thermistor library [click me](https://github.com/panStamp/thermistor)
+
 ### 99. Thermistor: improving the accuracy of analog readings with AREF<a id="99"></a>
+
+<img src="assets/images/Thermistor+3V3.png" width="700">
+
+<img src="assets/images/11.png" width="700">
+
+```ino
+/*  Thermistor temperature sensor demonstration sketch
+ *
+ * This sketch calculates the the temperature by reading the voltage of a
+ * thermistor connected in a voltage divider circuit.
+ *
+ * It then does a caclulation to convert this raw reading into a temperature.
+ *
+ * This sketch was adapted for Arduino Step by Step by Peter Dalmaris from the
+ * demo sketch that ships with the library, written by Daniel Berenguer.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - thermistor temperature sensor
+ *  - 10 kOhm resistor
+ *
+ *  Libraries
+ *  ---------
+ *  Thermistor.h
+ *
+ * Connections
+ * -----------
+ *
+ * Connect the Arduino 5V pin to one end of the
+ * thermistor. Connect the resistor to the Arduino GND
+ * pin. Connect the free pins on the thermistor and
+ * resistor together. Connect the thermistor and resistor
+ * junction to the Arduino analog pin 0. This
+ * structure is called a "voltage divider".
+ *                    10 kΩ
+ *  5V -----OOO------\/\/\/-----GND
+ *                |
+ *                |
+ *                |
+ *                A0
+ *
+ *
+ * Other information
+ * -----------------
+ *
+ * About the termistor: https://en.wikipedia.org/wiki/Thermistor
+ * The Github repository for the library: https://github.com/panStamp/thermistor
+ *
+ *
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ */
+
+/**
+ * Copyright (c) 2015 panStamp S.L.U. <contact@panstamp.com>
+ *
+ * This file is part of the panStamp project.
+ *
+ * panStamp  is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * panStamp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with panStamp; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+ * USA
+ *
+ * Author: Daniel Berenguer
+ * Creation date: 06/24/2015
+ */
+
+#include "thermistor.h"
+
+// Analog pin used to read the NTC
+#define NTC_PIN               A0
+
+// Thermistor object
+THERMISTOR thermistor(NTC_PIN,        // Analog pin
+                      7500,          // Nominal resistance at 25 ºC
+                      3950,           // thermistor's beta coefficient
+                      9950);         // Value of the series resistor
+
+// Global temperature reading
+uint16_t temp;
+
+/**
+ * setup
+ *
+ * Arduino setup function
+ */
+void setup()
+{
+  Serial.begin(9600);
+}
+
+/**
+ * loop
+ *
+ * Arduino main loop
+ */
+void loop()
+{
+  temp = thermistor.read();   // Read temperature
+
+  Serial.print("Temp in 1/10 ºC : ");
+  Serial.println(temp);
+
+  delay(5000);
+}
+
+```
+
+- With 3.3v and aref pin we can get clear reading as it more accurate than 5v pin
 
 ### 100. An introduction to measuring temperature with the TMP36<a id="100"></a>
 
+<img src="assets/images/12.png" width="700">
+
+<img src="assets/images/13.png" width="700">
+
+<img src="assets/images/14.png" width="700">
+
+- TMP36 analog temperature sensor datasheet [click me](https://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf)
+- Wiki Linear equation concept [click me](https://en.wikipedia.org/wiki/Linear_equation)
+
 ### 101. Wiring the TMP36 and a demonstration sketch<a id="101"></a>
 
+#### TMP36 5v schematic configuration
+
+<img src="assets/images/Thermistor+5V.png" width="700">
+
+#### TMP36 3.3v schematic configuration
+
+<img src="assets/images/Thermistor+3V3.png" width="700">
+
+<img src="assets/images/14.png" width="700">
+
+<img src="assets/images/15.png" width="700">
+
+<img src="assets/images/16.png" width="700">
+
+#### Output
+
+<img src="assets/images/17.png" width="700">
+
+```ino
+/*  TMP36 temperature sensor demonstration sketch
+ *
+ * This sketch reads the the voltage of the TMP36 sensor output pin.
+ * It then does a caclulation to convert this raw reading into a temperature.
+ *
+ * This sketch was written for Arduino Step by Step by Peter Dalmaris.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - TMP36 temperature sensor
+ *
+ *  Libraries
+ *  ---------
+ *  NONE
+ *
+ * Connections
+ * -----------
+ *
+ * As you look at the sensor with the label facing you, the left most pin is #1
+ *
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      1        |         5V
+ *      2        |         A0
+ *      3        |         GND
+ *
+ *
+ * Other information
+ * -----------------
+ *
+ * Datasheet: http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ */
+
+int sensorPin = 0; // The reading is obtained from analog pin 0 (A0)
+float supply_voltage = 5; // 3.3; //If you are useing a 3.3V supply voltage, change this accordingly.
+                          // If you are using the 3.3V supply also uncomment line 44.
+                          // If you are using the 5V supply, use the value "5" here.
+
+void setup()
+{
+ // analogReference(EXTERNAL); // If using 3.3V as reference by bridging it to the AREF pin,
+                               // then uncomment this line. If using 5V then this is not necessary.
+  Serial.begin(9600);  // Start the serial connection with the computer
+                       // to view the result open the serial monitor
+}
+
+void loop()
+{
+ //getting the voltage reading from the temperature sensor
+ int reading = analogRead(sensorPin);
+
+ // converting that reading to voltage, for 3.3v arduino use 3.3
+ float voltage = reading * supply_voltage / 1024;
+
+ // print out the voltage
+ Serial.print(voltage); Serial.println(" volts");
+
+ // now print out the temperature
+ float temperatureC = (voltage - 0.5) * 100 ;  //converting from 10 mv per degree with 500 mV offset
+                                               //to degrees ((voltage - 500mV) times 100)
+ Serial.print(temperatureC); Serial.println(" degrees C");
+
+ // now convert to Fahrenheit
+ float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
+ Serial.print(temperatureF); Serial.println(" degrees F");
+
+ delay(1000);                                     //waiting a second
+}
+```
+
 ### 102. An alternate wiring of the TMP36<a id="102"></a>
+
+#### TMP36 3.3v schematic configuration
+
+<img src="assets/images/Thermistor+3V3.png" width="700">
+
+#### Why we should use 3.3v and how to tell arduino about it so it sample from 0-1023 instead 0-600
+
+<img src="assets/images/18.png" width="700">
+
+<img src="assets/images/19.png" width="700">
+
+<img src="assets/images/20.png" width="700">
+
+- We are using 3.3v supply for temp sensor because the 3.3v has its on voltage regulator and filter capacitor on arduino board which provide smooth signal
+- As we draw voltage from laptop to arduino board that voltage is moving to other traces and same voltage we use to sensor, the signal has noise
+- But whenever we use 3.3 voltage for sensor we have to tell arduino that we are using 3.3v pin to do that we use jumper wire to connect pin Aref(analog reference)
+- If we wont connect aref pin using jumper wire in 3.3v volt the arduino max voltage changes to 3.3v but ADC have value from 0-600 sample instead of 0-1023
+
+#### output
+
+<img src="assets/images/21.png" width="700">
+
+```ino
+/*  TMP36 temperature sensor demonstration sketch
+ *
+ * This sketch reads the the voltage of the TMP36 sensor output pin.
+ * It then does a caclulation to convert this raw reading into a temperature.
+ *
+ * This sketch was written for Arduino Step by Step by Peter Dalmaris.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - TMP36 temperature sensor
+ *
+ *  Libraries
+ *  ---------
+ *  NONE
+ *
+ * Connections
+ * -----------
+ *
+ * As you look at the sensor with the label facing you, the left most pin is #1
+ *
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      1        |         5V
+ *      2        |         A0
+ *      3        |         GND
+ *
+ *
+ * Other information
+ * -----------------
+ *
+ * Datasheet: http://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ */
+
+int sensorPin = 0; // The reading is obtained from analog pin 0 (A0)
+float supply_voltage = 3.3; // 3.3; //If you are useing a 3.3V supply voltage, change this accordingly.
+                          // If you are using the 3.3V supply also uncomment line 44.
+                          // If you are using the 5V supply, use the value "5" here.
+
+void setup()
+{
+ analogReference(EXTERNAL); // If using 3.3V as reference by bridging it to the AREF pin,
+                               // then uncomment this line. If using 5V then this is not necessary.
+  Serial.begin(9600);  // Start the serial connection with the computer
+                       // to view the result open the serial monitor
+}
+
+void loop()
+{
+ //getting the voltage reading from the temperature sensor
+ int reading = analogRead(sensorPin);
+
+ // converting that reading to voltage, for 3.3v arduino use 3.3
+ float voltage = reading * supply_voltage / 1024;
+
+ // print out the voltage
+ Serial.print(voltage); Serial.println(" volts");
+
+ // now print out the temperature
+ float temperatureC = (voltage - 0.5) * 100 ;  //converting from 10 mv per degree with 500 mV offset
+                                               //to degrees ((voltage - 500mV) times 100)
+ Serial.print(temperatureC); Serial.println(" degrees C");
+
+ // now convert to Fahrenheit
+ float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
+ Serial.print(temperatureF); Serial.println(" degrees F");
+
+ delay(1000);                                     //waiting a second
+}
+```
 
 ### 103. An introduction to the MCP9808 for very accurate temperature readings<a id="103"></a>
 
