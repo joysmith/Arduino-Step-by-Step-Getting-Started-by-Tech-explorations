@@ -23,11 +23,19 @@
 
 ### 94. Using a DHT22 sensor to measure temperature and humidity<a id="94"></a>
 
-Schematic
+<img src="assets/images/1.png" width="700">
 
-<img src="assets/images/DHT22 schematic.png.png" width="700">
+<img src="assets/images/2.png" width="700">
 
-- DHT22 humidity & temperature analog sensor datasheet [click me](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
+#### Schematic
+
+<img src="assets/images/DHT22 schematic.png" width="700">
+
+#### Output
+
+<img src="assets/images/3.png" width="700">
+
+- DHT22 also named as AM2302, humidity & temperature sensor datasheet [click me](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf)
 - Wiki humidity concept [click me](https://en.wikipedia.org/wiki/Humidity#Relative_humidity)
 - Wiki heat index concept [click me](https://en.wikipedia.org/wiki/Heat_index)
 - Techexploration pull-up & pull-down concept [click me](https://techexplorations.com/guides/arduino/common-circuits/pull-up-and-pull-down-resistors/)
