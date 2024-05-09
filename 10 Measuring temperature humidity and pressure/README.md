@@ -965,12 +965,465 @@ void loop()
 
 ### 107. An introduction to measuring barometric pressure with the BMP180<a id="107"></a>
 
+- BMP180 digital pressure sensor datasheet [click me](https://www.digikey.com/htmldatasheets/production/856385/0/0/1/bmp180-datasheet.html)
+
 ### 108. Wiring the BMP180 and first sketch walkthrough<a id="108"></a>
+
+#### Sbhematic
+
+<img src="assets/images/35.png" width="700">
+
+<img src="assets/images/36.png" width="700">
+
+#### How to connect breakout board to breadboard
+
+- make sensor upside down, to make reading easy then wire
+
+<img src="assets/images/37.png" width="700">
+
+<img src="assets/images/38.png" width="700">
+
+<img src="assets/images/39.png" width="700">
+
+- turn sensor again and attach to breadboard
 
 ### 109. A first demo sketch for the BMP180<a id="109"></a>
 
+#### Output
+
+<img src="assets/images/40.png" width="700">
+
+#### How to install BMP180 pressure sensor sparkfun library
+
+- Open arduino go to sketch--> include library--> manage libraries--> search:bmp180--> sparkfun BMP180 by sparkfun electronic
+
+```ino
+/*  BMP180 sensor demo sketch
+ *
+ * This sketch extracts barometric pressure and temperature
+ * from the BMP180 breakout module.
+ *
+ * This sketch was adapted from the original that comes with the
+ * Sparkfun SFE_BMP180 library for Arduino Step by Step by Peter Dalmaris.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - BMP180 sensor breakout or equivelant (the BMP085 will also work)
+ *
+ *  Libraries
+ *  ---------
+ *  - Wire
+ *  - SFE_BMP180
+ *
+ * Connections
+ * -----------
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      VIN      |      5V
+ *      GND      |      GND
+ *      SCL      |      SCL or A5
+ *      SDA      |      SDA or A4
+ *
+ * Other information
+ * -----------------
+ *  For information on barometric pressure: https://en.wikipedia.org/wiki/Atmospheric_pressure
+ *  For information on the Sparkfun library is at https://github.com/sparkfun/BMP180_Breakout_Arduino_Library
+ *  Datasheet: https://github.com/sparkfun/BMP180_Breakout/raw/master/Documentation/BMP180%20Datasheet%20V2.5.pdf
+ *
+ *  For best results, insert the actual height at your location in the ALTITUDE variable.
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ * ORIGINAL HEADER from the Sparkfun library
+ *
+ * This sketch shows how to use the SFE_BMP180 library to read the
+ * Bosch BMP180 barometric pressure sensor.
+ * https://www.sparkfun.com/products/11824
+ *
+ * Like most pressure sensors, the BMP180 measures absolute pressure.
+ * This is the actual ambient pressure seen by the device, which will
+ * vary with both altitude and weather.
+ *
+ * Before taking a pressure reading you must take a temparture reading.
+ * This is done with startTemperature() and getTemperature().
+ * The result is in degrees C.
+ *
+ * Once you have a temperature reading, you can take a pressure reading.
+ * This is done with startPressure() and getPressure().
+ * The result is in millibar (mb) aka hectopascals (hPa).
+ *
+ * If you'll be monitoring weather patterns, you will probably want to
+ * remove the effects of altitude. This will produce readings that can
+ * be compared to the published pressure readings from other locations.
+ * To do this, use the sealevel() function. You will need to provide
+ * the known altitude at which the pressure was measured.
+ *
+ * If you want to measure altitude, you will need to know the pressure
+ * at a baseline altitude. This can be average sealevel pressure, or
+ * a previous pressure reading at your altitude, in which case
+ * subsequent altitude readings will be + or - the initial baseline.
+ * This is done with the altitude() function.
+ *
+ * Hardware connections:
+ *
+ * - (GND) to GND
+ * + (VDD) to 3.3V or 5V
+ *
+ * (WARNING: do not connect + to 5V or the sensor will be damaged!)
+ *
+ * You will also need to connect the I2C pins (SCL and SDA) to your
+ * Arduino. The pins are different on different Arduinos:
+ *
+ * Any Arduino pins labeled:  SDA  SCL
+ * Uno, Redboard, Pro:        A4   A5
+ * Mega2560, Due:             20   21
+ * Leonardo:                   2    3
+ *
+ * Leave the IO (VDDIO) pin unconnected. This pin is for connecting
+ * the BMP180 to systems with lower logic levels such as 1.8V
+ *
+ * Have fun! -Your friends at SparkFun.
+ *
+ * The SFE_BMP180 library uses floating-point equations developed by the
+ * Weather Station Data Logger project: http://wmrx00.sourceforge.net/
+ *
+ * Our example code uses the "beerware" license. You can do anything
+ * you like with this code. No really, anything. If you find it useful,
+ * buy me a beer someday.
+ *
+ * V10 Mike Grusin, SparkFun Electronics 10/24/2013
+ * V1.1.2 Updates for Arduino 1.6.4 5/2015
+ */
+
+
+#include <SFE_BMP180.h>
+#include <Wire.h>
+
+// You will need to create an SFE_BMP180 object, here called "pressure":
+
+SFE_BMP180 pressure;
+
+#define ALTITUDE 217.0 // Altitude of Tech Explorations's HQ in Sydney, AUS in meters
+
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("REBOOT");
+
+  // Initialize the sensor (it is important to get calibration values stored on the device).
+
+  if (pressure.begin())
+    Serial.println("BMP180 init success");
+  else
+  {
+    // Oops, something went wrong, this is usually a connection problem,
+    // see the comments at the top of this sketch for the proper connections.
+
+    Serial.println("BMP180 init fail\n\n");
+    while(1); // Pause forever.
+  }
+}
+
+void loop()
+{
+  char status;
+  double T,P,p0,a;
+
+  // Loop here getting pressure readings every 10 seconds.
+
+  // If you want sea-level-compensated pressure, as used in weather reports,
+  // you will need to know the altitude at which your measurements are taken.
+  // We're using a constant called ALTITUDE in this sketch:
+
+  Serial.println();
+  Serial.print("provided altitude: ");
+  Serial.print(ALTITUDE,0);
+  Serial.print(" meters, ");
+  Serial.print(ALTITUDE*3.28084,0);
+  Serial.println(" feet");
+
+  // If you want to measure altitude, and not pressure, you will instead need
+  // to provide a known baseline pressure. This is shown at the end of the sketch.
+
+  // You must first get a temperature measurement to perform a pressure reading.
+
+  // Start a temperature measurement:
+  // If request is successful, the number of ms to wait is returned.
+  // If request is unsuccessful, 0 is returned.
+
+  status = pressure.startTemperature();
+  if (status != 0)
+  {
+    // Wait for the measurement to complete:
+    delay(status);
+
+    // Retrieve the completed temperature measurement:
+    // Note that the measurement is stored in the variable T.
+    // Function returns 1 if successful, 0 if failure.
+
+    status = pressure.getTemperature(T);
+    if (status != 0)
+    {
+      // Print out the measurement:
+      Serial.print("temperature: ");
+      Serial.print(T,2);
+      Serial.print(" deg C, ");
+      Serial.print((9.0/5.0)*T+32.0,2);
+      Serial.println(" deg F");
+
+      // Start a pressure measurement:
+      // The parameter is the oversampling setting, from 0 to 3 (highest res, longest wait).
+      // If request is successful, the number of ms to wait is returned.
+      // If request is unsuccessful, 0 is returned.
+
+      status = pressure.startPressure(3);
+      if (status != 0)
+      {
+        // Wait for the measurement to complete:
+        delay(status);
+
+        // Retrieve the completed pressure measurement:
+        // Note that the measurement is stored in the variable P.
+        // Note also that the function requires the previous temperature measurement (T).
+        // (If temperature is stable, you can do one temperature measurement for a number of pressure measurements.)
+        // Function returns 1 if successful, 0 if failure.
+
+        status = pressure.getPressure(P,T);
+        if (status != 0)
+        {
+          // Print out the measurement:
+          Serial.print("absolute pressure: ");
+          Serial.print(P,2);
+          Serial.print(" mb, ");
+          Serial.print(P*0.0295333727,2);
+          Serial.println(" inHg");
+
+          // The pressure sensor returns abolute pressure, which varies with altitude.
+          // To remove the effects of altitude, use the sealevel function and your current altitude.
+          // This number is commonly used in weather reports.
+          // Parameters: P = absolute pressure in mb, ALTITUDE = current altitude in m.
+          // Result: p0 = sea-level compensated pressure in mb
+
+          p0 = pressure.sealevel(P,ALTITUDE); // we're at 1655 meters (Boulder, CO)
+          Serial.print("relative (sea-level) pressure: ");
+          Serial.print(p0,2);
+          Serial.print(" mb, ");
+          Serial.print(p0*0.0295333727,2);
+          Serial.println(" inHg");
+
+          // On the other hand, if you want to determine your altitude from the pressure reading,
+          // use the altitude function along with a baseline pressure (sea-level or other).
+          // Parameters: P = absolute pressure in mb, p0 = baseline pressure in mb.
+          // Result: a = altitude in m.
+
+          a = pressure.altitude(P,p0);
+          Serial.print("computed altitude: ");
+          Serial.print(a,0);
+          Serial.print(" meters, ");
+          Serial.print(a*3.28084,0);
+          Serial.println(" feet");
+        }
+        else Serial.println("error retrieving pressure measurement\n");
+      }
+      else Serial.println("error starting pressure measurement\n");
+    }
+    else Serial.println("error retrieving temperature measurement\n");
+  }
+  else Serial.println("error starting temperature measurement\n");
+
+  delay(5000);  // Pause for 5 seconds.
+}
+```
+
+- github BMP180_Breakout_Arduino_Library [click me](https://github.com/sparkfun/)
+- Wiki Oversampling concept [click me](https://en.wikipedia.org/wiki/Oversampling)
+- Wiki Pointer (computer programming) concept [click me](<https://en.wikipedia.org/wiki/Pointer_(computer_programming)>)
+- Wiki Pressure measurement concept [click me](https://en.wikipedia.org/wiki/Pressure_measurement)
+
 ### 110. A second demo sketch for the BMP180<a id="110"></a>
 
-<img src="assets/images/45.png" width="700">
-- Ardunio uno r3 documentation #define [click me](https://www.arduino.cc/reference/en/language/structure/further-syntax/define/)
-- Wiki Gamma correction concept [click me](<https://en.wikipedia.org/wiki/Gamma_correction>)
+<img src="assets/images/41.png" width="700">
+
+```ino
+/*  BMP180 sensor demo sketch
+ *
+ * This sketch extracts barometric pressure and temperature
+ * from the BMP180 breakout module.
+ *
+ * This sketch was adapted from the original that comes with the
+ * Adafruit Adafruit_BMP085_U library for Arduino Step by Step by Peter Dalmaris.
+ *
+ * Components
+ * ----------
+ *  - Arduino Uno
+ *  - BMP180 sensor breakout or equivelant (the BMP085 will also work)
+ *
+ *  Libraries
+ *  ---------
+ *  - Wire
+ *  - Adafruit_Sensor
+ *  - Adafruit_BMP085_U
+ *
+ * Connections
+ * -----------
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      VIN      |      5V
+ *      GND      |      GND
+ *      SCL      |      SCL or A5
+ *      SDA      |      SDA or A4
+ *
+ * Other information
+ * -----------------
+ *  For information on barometric pressure: https://en.wikipedia.org/wiki/Atmospheric_pressure
+ *  For information on the Adafruit library is at https://github.com/adafruit/Adafruit_BMP085_Unified
+ *  Datasheet: https://github.com/sparkfun/BMP180_Breakout/raw/master/Documentation/BMP180%20Datasheet%20V2.5.pdf
+ *
+ *  For best results, find the atmospheric pressure at sea level at the closest location to yours,
+ *  and store it in the seaLevelPressure variable.
+ *
+ *  Created on October 8 2016 by Peter Dalmaris
+ *
+ *
+ * This driver uses the Adafruit unified sensor library (Adafruit_Sensor),
+ * which provides a common 'type' for sensor data and some helper functions.
+ *
+ * To use this driver you will also need to download the Adafruit_Sensor
+ * library and include it in your libraries folder.
+ *
+ * You should also assign a unique ID to this sensor for use with
+ * the Adafruit Sensor API so that you can identify this particular
+ * sensor in any data logs, etc.  To assign a unique ID, simply
+ * provide an appropriate value in the constructor below (12345
+ * is used by default in this example).
+ *
+ * Connections
+ * ===========
+ * Connect SCL to analog 5
+ * Connect SDA to analog 4
+ * Connect VDD to 3.3V DC
+ * Connect GROUND to common ground
+ *
+ * History
+ * =======
+ * 2013/JUN/17  - Updated altitude calculations (KTOWN)
+ * 2013/FEB/13  - First version (KTOWN)
+*/
+
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BMP085_U.h>
+
+
+
+Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
+
+/**************************************************************************/
+/*
+    Displays some basic information on this sensor from the unified
+    sensor API sensor_t type (see Adafruit_Sensor for more information)
+*/
+/**************************************************************************/
+void displaySensorDetails(void)
+{
+  sensor_t sensor;
+  bmp.getSensor(&sensor);
+  Serial.println("------------------------------------");
+  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" hPa");
+  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" hPa");
+  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" hPa");
+  Serial.println("------------------------------------");
+  Serial.println("");
+  delay(500);
+}
+
+/**************************************************************************/
+/*
+    Arduino setup function (automatically called at startup)
+*/
+/**************************************************************************/
+void setup(void)
+{
+  Serial.begin(9600);
+  Serial.println("Pressure Sensor Test"); Serial.println("");
+  Serial.println("Starting");
+
+    bmp.begin();
+  /* Initialise the sensor */
+  if(!bmp.begin())
+  {
+    /* There was a problem detecting the BMP085 ... check your connections */
+    Serial.print("Ooops, no BMP085 detected ... Check your wiring or I2C ADDR!");
+    while(1);
+  }
+  Serial.println("Started");
+
+  /* Display some basic information on this sensor */
+  displaySensorDetails();
+}
+
+/**************************************************************************/
+/*
+    Arduino loop function, called once 'setup' is complete (your own code
+    should go here)
+*/
+/**************************************************************************/
+void loop(void)
+{
+  /* Get a new sensor event */
+  sensors_event_t event;
+  bmp.getEvent(&event);
+
+  /* Display the results (barometric pressure is measure in hPa) */
+  if (event.pressure)
+  {
+    /* Display atmospheric pressue in hPa */
+    Serial.print("Pressure:    ");
+    Serial.print(event.pressure);
+    Serial.println(" hPa");
+
+    /* Calculating altitude with reasonable accuracy requires pressure    *
+     * sea level pressure for your position at the moment the data is     *
+     * converted, as well as the ambient temperature in degress           *
+     * celcius.  If you don't have these values, a 'generic' value of     *
+     * 1013.25 hPa can be used (defined as SENSORS_PRESSURE_SEALEVELHPA   *
+     * in sensors.h), but this isn't ideal and will give variable         *
+     * results from one day to the next.                                  *
+     *                                                                    *
+     * You can usually find the current SLP value by looking at weather   *
+     * websites or from environmental information centers near any major  *
+     * airport.                                                           *
+     *                                                                    *
+     * For example, for Paris, France you can check the current mean      *
+     * pressure and sea level at: http://bit.ly/16Au8ol                   */
+
+    /* First we get the current temperature from the BMP085 */
+    float temperature;
+    bmp.getTemperature(&temperature);
+    Serial.print("Temperature: ");
+    Serial.print(temperature);
+    Serial.println(" C");
+
+    /* Then convert the atmospheric pressure, and SLP to altitude         */
+    /* Update this next line with the current SLP for better results      */
+//    float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
+    float seaLevelPressure = 1003.4;
+    Serial.print("Altitude:    ");
+    Serial.print(bmp.pressureToAltitude(seaLevelPressure,
+                                        event.pressure));
+    Serial.println(" m");
+    Serial.println("");
+  }
+  else
+  {
+    Serial.println("Sensor error");
+  }
+  delay(1000);
+}
+```
+
+- github Adafruit_BMP085_Unified [click me](Adafruit_BMP085_Unified)
