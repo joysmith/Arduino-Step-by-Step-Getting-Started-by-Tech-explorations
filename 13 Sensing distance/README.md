@@ -108,3 +108,14 @@ void loop() {
   delay(500);
 }
 ```
+
+- Ardunio uno r3 documentation pulseIn() function [click me](https://www.arduino.cc/reference/en/language/functions/advanced-io/pulsein/)
+
+Note-
+
+- There are function that we use over and over again they are common function ex: digitalRead(), digitalWrite()
+- There are function that are board specific function, that we used when we are using specific breakout board ex: pulseIn() etc...
+
+#### Paradigm shift:
+
+- App feature specific function (learn few while making specific app) VS open Library and learning every function without knowing which feature to use with
