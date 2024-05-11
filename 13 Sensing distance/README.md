@@ -9,8 +9,6 @@
 
 ### 123. Introduction to the ultrasonic distance sensor<a id="123"></a>
 
-<img src="assets/images/1.png" width="700">
-
 - Wiki Ultrasound concept [click me](https://en.wikipedia.org/wiki/Ultrasound)
 - Wiki Ultrasonic_transducer concept [click me](https://en.wikipedia.org/wiki/Ultrasonic_transducer)
 - HC-SR04 ultrasonic sensor datasheet [click me](https://docs.google.com/document/d/1Y-yZnNhMYy7rwhAgyL_pfa39RsB-x2qR4vP8saG73rE/edit)
@@ -19,9 +17,27 @@
 
 <img src="assets/images/0510+-+Ultrasonic+Sensor+HC-SR04.png" width="700">
 
+<img src="assets/images/1.png" width="700">
+
 - Wiki Oscilloscope topic [click me](https://en.wikipedia.org/wiki/Oscilloscope)
 
 ### 125. How to calculate distance<a id="125"></a>
+
+#### Trigger ping
+
+<img src="assets/images/2.png" width="700">
+
+#### Echo ping
+
+<img src="assets/images/3.png" width="700">
+
+#### derived formula
+
+<img src="assets/images/4.png" width="700">
+
+#### Output
+
+<img src="assets/images/5.png" width="700">
 
 ```ino
 /*  Ultrasonic distance sensor HC-SR04 demo sketch
