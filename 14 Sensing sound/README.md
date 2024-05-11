@@ -9,11 +9,26 @@
 
 ### 127. Introduction to the analog sound sensor<a id="127"></a>
 
+- The analog sound sensor gives current output
 - Wiki Signal processing topic [click me](https://en.wikipedia.org/wiki/Signal_processing)
 
 ### 128. A demonstration and sketch of the analog sound sensor<a id="128"></a>
 
 <img src="assets/images/0560+-+Analog+microphone.png" width="700">
+
+<img src="assets/images/1.png" width="700">
+
+<img src="assets/images/2.png" width="700">
+
+#### How to take reading for calibration
+
+<img src="assets/images/3.png" width="700">
+
+#### Calibrated value from sketch
+
+- we used code to calibrate the microphone
+
+<img src="assets/images/4.png" width="700">
 
 - Wiki Loudness concept [click me](https://en.wikipedia.org/wiki/Loudness)
 
@@ -110,6 +125,16 @@ void resetValues()
 ### 129. A demonstration and sketch of the digital sound sensor<a id="129"></a>
 
 <img src="assets/images/0560+-+Digital+sound+sensor.png" width="700">
+
+<img src="assets/images/5.png" width="700">
+
+<img src="assets/images/6.png" width="700">
+
+<img src="assets/images/7.png" width="700">
+
+#### Output
+
+<img src="assets/images/8.png" width="700">
 
 ```ino
 /*  Digital sound sensor demo sketch
