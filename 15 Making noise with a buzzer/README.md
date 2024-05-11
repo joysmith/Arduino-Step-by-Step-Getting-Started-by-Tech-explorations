@@ -13,7 +13,7 @@
 
 <img src="assets/images/1.png" width="700">
 
-#### passive buzzer 3 pin
+#### powered passive buzzer 3 pin
 
 <img src="assets/images/2.png" width="700">
 
@@ -78,7 +78,7 @@ void loop(){
 
 <img src="assets/images/4.png" width="700">
 
-#### passive 3 pin buzzer
+#### powered passive 3 pin buzzer
 
 <img src="assets/images/5.png" width="700">
 
