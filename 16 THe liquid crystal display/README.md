@@ -313,3 +313,5 @@ void loop()
 ```
 
 ### 140. Using the RGB LCD and buttons shield<a id="140"></a>
+
+- MCP23017/MCP23S17 datasheet [click me](https://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf)
