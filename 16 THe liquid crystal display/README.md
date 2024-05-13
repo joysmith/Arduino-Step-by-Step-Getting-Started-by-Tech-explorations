@@ -249,6 +249,9 @@ void loop() {
 
 <img src="assets/images/7.png" width="700">
 
+- A4(SDA), A5(SCL) there are other I2C pins
+- Open arduino IDE go to Sketch--> include library--> manage libraries--> search: Liquid crystal by Frank de brabander
+
 ```ino
 /*  LCD screen with the I2C backpack demo sketch
  *
@@ -313,5 +316,8 @@ void loop()
 ```
 
 ### 140. Using the RGB LCD and buttons shield<a id="140"></a>
+
+- Open arduino IDE go to Sketch--> include library--> manage libraries--> search: adafruit_mcp230 by adafruit
+- Open arduino IDE go to Sketch--> include library--> manage libraries--> search: rgbledshield by adafruit
 
 - MCP23017/MCP23S17 datasheet [click me](https://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf)
