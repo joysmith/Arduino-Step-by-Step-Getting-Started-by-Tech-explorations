@@ -90,7 +90,7 @@ void loop() {
 
 #### How to use Serial Plotter
 
-<img src="assets/images/2.png" width="700">
+<img src="assets/images/3.png" width="700">
 
 - go to menu Files--> Example--> basic--> blink
 - go to menu Tools--> Boards--> arduino avr board--> arduino uno
